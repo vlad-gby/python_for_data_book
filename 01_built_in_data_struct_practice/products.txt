@@ -1,0 +1,4 @@
+espresso,1.50
+cappuccino,2.50
+cornetto,1.20
+pizza,5.00

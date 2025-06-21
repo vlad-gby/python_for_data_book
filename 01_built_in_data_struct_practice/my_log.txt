@@ -1,0 +1,4 @@
+Initial log entry.
+Another line from the start.
+This line is appended.
+And this one too, at the very end.

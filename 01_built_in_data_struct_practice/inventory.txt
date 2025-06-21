@@ -1,0 +1,7 @@
+gin,12
+vermouth,5
+tonic water,250
+orange,260
+napkins,460
+lime,230
+chips,460
