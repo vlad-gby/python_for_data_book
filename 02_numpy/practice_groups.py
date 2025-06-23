@@ -294,7 +294,7 @@ n_very_tall = (heights_cm > 202).sum()
 ticket_pool = np.arange(1001, 1201)
 rng = np.random.default_rng(seed=654)
 winning_tickets = np.full(10, rng.choice(ticket_pool, size=10, replace=False))
-print(winning_tickets)
+# print(winning_tickets)
 
 
 
@@ -362,6 +362,236 @@ rng.shuffle(ships)
 
 
 
+# Group 4 Mini-Tasks
+# Mini-Task 1: Positional Statistics (argmin & argmax)
+# Scenario: You have the daily maximum temperature readings for your city, Bergamo, for the 31 days of July. You need to find out on which days the lowest and highest temperatures of the month occurred.
+
+# Dataset Creation:
+
+# Create a 1D NumPy array named july_temps. It should have 31 floating-point values, representing temperatures from a normal distribution with a mean of 28.0 and a standard deviation of 4.0.
+# Your Task:
+
+# Generate the july_temps array.
+# Use np.argmin() to find the index (day of the month, 0-30) of the coldest day.
+# Use np.argmax() to find the index of the hottest day.
+
+
+
+july_temps = rng.standard_normal(31) * 4 + 28
+coldest = july_temps.argmin()
+hottest = july_temps.argmax()
+# print(july_temps[coldest], july_temps[hottest])
+
+
+
+# Mini-Task 2: Sorting Along an Axis (np.sort)
+# Scenario: You are analyzing the performance of 4 race car drivers over 5 laps. You want to see each driver's individual lap times sorted from fastest to slowest to quickly identify their best and worst laps.
+
+# Dataset Creation:
+
+# Create a 2D NumPy array named lap_times with a shape of (4, 5) (4 drivers, 5 laps).
+# The values should be random floats representing lap times in seconds, for example, between 88.5 and 91.5 seconds.
+# Your Task:
+
+# Generate the lap_times array.
+# Create a new array sorted_lap_times where each row (each driver's laps) is sorted independently from fastest to slowest.
+
+
+lap_times = rng.standard_normal(size=(4, 5)) * 2 + 90
+sorted_lap_times = np.sort(lap_times, axis=1)
+# even though it's not practical, as we don't know at the end which lap was what, i was better to use tuples with lap nums, but anyway.
+# probably in pandas it's built-in in some way, but in numpy it's better to work with tuple in that example
+
+
+
+
+# Mini-Task 3: Indirect Sorting (np.argsort)
+# Scenario: You are the manager of your bar. At the end of the day, you have the sales counts for several products. You need to create a ranked list of the product names from best-selling to worst-selling.
+
+# Dataset Creation:
+
+# Create a 1D NumPy array named product_names containing the string values: ['Aperol Spritz', 'Espresso', 'Cornetto', 'Prosecco', 'Gin Tonic'].
+# Create a parallel 1D array named product_sales with a corresponding integer sales count for each product.
+# Your Task:
+
+# Generate the two arrays.
+# Use np.argsort() on the product_sales array. This will give you the indices that would sort the sales array.
+# Use these sorted indices (with fancy indexing) to reorder the product_names array to get your final ranked list.
+
+
+
+prod_names = np.array(['Aperol Spritz', 'Espresso', 'Cornetto', 'Prosecco', 'Gin Tonic'])
+prod_sales = rng.integers(2, 8, size=prod_names.size)
+prod_names = prod_names[np.argsort(prod_sales)]
+# print(prod_names, prod_sales)
+
+
+
+# Mini-Task 4: Finding Unique Visitors (np.unique)
+# Scenario: A local news website logs the country of origin for every visitor. You have a long log from the last hour and you need to report how many unique countries the visitors came from.
+
+# Dataset Creation:
+
+# Create a 1D NumPy array named visitor_log with 200 elements.
+# To simulate traffic, populate this array by randomly choosing from a list of 8 country codes (e.g., ['IT', 'DE', 'US', 'GB', 'FR', 'UA', 'ES', 'CH']), allowing for many duplicates.
+# Your Task:
+
+# Generate the visitor_log array.
+# Use np.unique() to get a new array containing only the unique country codes.
+# Find the total number of unique countries by checking the size of this new array.
+
+
+
+country_examples = ['IT', 'DE', 'US', 'GB', 'FR', 'UA', 'ES', 'CH']
+visitor_log = rng.choice(country_examples, 200)
+unique_num = np.unique(visitor_log).size
+# print(unique_num)
+
+
+
+# Mini-Tast 5: Checking Set Membership (np.in1d)
+# Scenario: Your company has a list of all employee IDs. A separate list contains the IDs of employees who have registered for a special "Advanced Python" workshop. You need to quickly check which employees from the Data Science department are registered.
+
+# Dataset Creation:
+
+# Create a 1D array named data_science_team_ids with the integer IDs of 5 employees.
+# Create a 1D array named workshop_registrants with 15 random integer IDs, some of which should overlap with the data science team's IDs.
+# Your Task:
+
+# Generate the two arrays.
+# Use np.in1d() to get a boolean array that answers the question: "Is each member of the data science team registered for the workshop?"
+
+
+my_employees_ids = np.arange(100)
+workshop_ids = rng.choice(np.arange(0, 1000), size=999, replace=False)
+my_emp_present = my_employees_ids[np.isin(my_employees_ids, workshop_ids)]
+# print('yes' if my_emp_present.size == my_employees_ids.size else 'no')
+
+
+
+# Unifying Task: Group 4
+# Scenario:
+# You are given a raw dataset from a multiplayer online game. It's a 2D array where each row represents a player and the columns are [player_id, score, time_played_in_hours]. You need to perform a series of analyses to identify top players and understand player behavior.
+
+# Dataset Creation:
+
+# Create a 2D array named player_data for 100 players.
+# The first column (player_id) should contain unique IDs from 1000 to 1099.
+# The second column (score) should contain random integers between 0 and 50000.
+# The third column (time_played) should contain random integers between 1 and 500.
+# Analysis:
+
+# Top Player: Find the player_id of the single player with the absolute highest score.
+# Leaderboard: Create a new 1D array named leaderboard_ids that contains the player_ids of all 100 players, ranked from highest score to lowest score.
+# Elite Group Check: You are given a separate list of veteran_player_ids. Determine which of these veteran players appear in the top 20 of your new leaderboard.
+# Efficiency Analysis: For each unique value of time_played, calculate the average score of all players who played for that exact amount of time. This will show if more time played correlates with higher scores. (This is a challenging step that requires combining several techniques).
+
+rng = np.random.default_rng(seed=64323)
+ids = rng.choice(np.arange(1000, 1100), 100, replace = False)
+score = rng.integers(0, 50_001, 100)
+time_played = rng.integers(1, 100, 100)
+
+def take_score(arr):
+    return arr[:, 1]
+
+players = np.array([ids, score, time_played]).T
+top_by_score = players[players[:, 1] == players[:, 1].max()]
+indices = np.argsort(take_score(players))
+leaderboard = players[indices]
+
+veteran_player_ind = (rng.standard_normal(40) * 20).round()
+veteran_player_ind = veteran_player_ind[veteran_player_ind < 0].astype('int')
+veteran_players = leaderboard[veteran_player_ind]
+veterans_in_top = veteran_players[np.isin(veteran_players[:, 0], leaderboard[-20:][:, 0])]
+
+avg_for_time = np.array([np.arange(1, 101), np.zeros(100)]).T
+# for item in avg_for_time:
+#     item[1] =  players[players[:, 2] == item[0]][:, 1].mean()
+# print(avg_for_time)
+
+
+
+
+
+
+# Group 5 Tasks
+# Task 1: Cocktail Production Cost Calculator
+# Scenario: You run a bar and need to calculate the production cost for each of your signature cocktails based on the cost of their ingredients. This can be solved efficiently with a single matrix multiplication.
+
+# Dataset Creation:
+
+# Create a 2D NumPy array named recipes. It should have a shape of (3, 4), representing 3 cocktails and 4 ingredients. The values should be the amount of each ingredient in milliliters (e.g., a Negroni might be [30, 30, 30, 0]).
+# Create a 1D NumPy array named ingredient_costs with 4 elements. The values should represent the cost per milliliter for each of the 4 ingredients (e.g., [0.05, 0.03, 0.03, 0.04]).
+# Your Task:
+
+# Using a single matrix multiplication operation (@ or np.dot), calculate a new 1D array named cocktail_costs that contains the final production cost for each of the 3 cocktails.
+
+
+
+recipes = np.array([
+    [30, 30, 30,  5],
+    [60, 10,  5,  2],
+    [45,  5, 15, 40]  
+], dtype=np.int32)
+
+ingredient_costs = rng.integers(25, 40, size=4) / 1000
+prices_per_cocktail = recipes @ ingredient_costs
+# print(prices_per_cocktail)
+
+
+
+# Task 2: Solving for Unknowns with Matrix Inversion
+# Scenario: You're trying to determine the individual prices of an espresso and a cornetto from two past orders.
+
+# Order 1: 2 espressos + 1 cornetto cost €4.40
+# Order 2: 1 espresso + 3 cornettos cost €5.70
+# This can be written as a system of linear equations A * x = b, where the solution is x = inv(A) @ b.
+
+# Dataset Creation:
+
+# Create the (2, 2) matrix A representing the quantities of items in the orders.
+# Create the (2,) vector b representing the total costs of the orders.
+# Your Task:
+
+# Calculate the inverse of matrix A.
+# Use matrix multiplication to solve for x, the vector containing the individual prices of the espresso and the cornetto.
+
+
+
+orders = np.array([[2, 1],
+                  [1, 3]])
+cost = np.array([4.40, 5.70])
+prices = np.linalg.inv(orders) @ cost
+# print(prices)
+
+
+
+
+# Task 3: Saving & Loading Machine Learning Model Parameters
+# Scenario: After training a machine learning model, its "knowledge" is stored in its parameters (weights and biases), which are just NumPy arrays. You need to save these parameters to disk so you can load them later for making predictions without having to retrain the model.
+
+# Dataset Creation:
+
+# Simulate the parameters for a neural network layer. Create two separate 2D NumPy arrays: str(weights_layer) with a shape of (128, 64), and biases_layer with a shape of (1, 64).
+# Fill both arrays with random floating-point numbers from a standard normal distribution.
+# Your Task:
+
+# Save the weights_layer array to a file named weights.npy.
+# Save the biases_layer array to a file named biases.npy.
+# Imagine you've closed your script. Now, load the two arrays back from their files into new variables, loaded_weights and loaded_biases.
+# Verify that the loaded arrays are identical to the original ones. (Hint: Use np.array_equal()).
+
+
+weights_layer = rng.standard_normal((128, 64))
+biases_layer = rng.standard_normal((1, 64))
+
+np.save('weights', weights_layer)
+np.save('biases', biases_layer)
+
+load_weights = np.load('weights.npy')
+load_biases = np.load('biases.npy')
+# print(np.array_equal(load_weights, weights_layer))
+# print(np.array_equal(load_biases, biases_layer))
 
 
 
