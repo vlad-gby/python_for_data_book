@@ -1,5 +1,8 @@
 import numpy as np
 
+import os
+
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # Final Project 1: Monte Carlo Pizza Shop Simulation
 # Scenario:
@@ -70,17 +73,17 @@ import matplotlib.pyplot as plt
 from PIL import Image
 
 rng = np.random.default_rng(seed=6534)
-image = np.array(Image.open('02_numpy/img.jpg'))
+image = np.array(Image.open('img.jpg'))
 # rng.random(size=(200, 300, 3))
 
 x_values = np.arange(0, image.shape[1])
 y_values = np.arange(0, image.shape[0])
 
 all_x, all_y = np.meshgrid(x_values, y_values)
-mask = np.sqrt((all_x - (image.shape[1] / 2))**2 + (all_y - (image.shape[0] / 2))**2).reshape(image.shape[0], image.shape[1], 1)
+mask = np.sqrt((all_x - (image.shape[1] / 2))**2 + (all_y - 900 - (image.shape[0] / 2))**2).reshape(image.shape[0], image.shape[1], 1)
 mask = mask / mask.max()
 
-image = (image / 255) - mask / 3
+image = (image / 255) - mask / 2
 image = np.where(image < 0, 0, image)
 
 right_img = Image.fromarray((image * 255).astype(np.uint8))
