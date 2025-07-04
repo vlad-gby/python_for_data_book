@@ -245,13 +245,14 @@ data = data.iloc[:, [0, 4, 1, 3, 2]]
 # Your Task: Create a summary report that shows the performance of each sales Region. The final report must show the total Revenue, the average Quantity per order, and the number of unique Products sold for each region.
 
 log = pd.read_csv('sales_log_data.csv')
+log['Revenue'] = log['Price'] * log['Quantity']
 log_by_region = pd.DataFrame()
 
-log2 = log.groupby('Region').agg({'Price': 'sum',
-                                  'Quantity': 'mean',
-                                  'Product': 'nunique'})
+summary = log.groupby('Region').agg(tot_rev = ('Revenue', 'sum'),
+                                 avg_quantity = ('Quantity', 'mean'),
+                                 unique_prods = ('Product', 'nunique'))
 
-# print(log_by_region)
+# print(summary)
 
 
 ### Project 4.2: User Engagement by Signup Cohort
