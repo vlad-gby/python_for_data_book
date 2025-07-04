@@ -1,0 +1,10 @@
+UserID,User_Segment,Device_Type,Session_Duration_Min,Action
+1,New,Mobile,15,View
+2,Returning,Desktop,45,Purchase
+1,New,Mobile,15,Click
+3,New,Desktop,22,View
+2,Returning,Desktop,45,View
+4,Returning,Mobile,30,View
+2,Returning,Desktop,45,View
+3,New,Desktop,22,Scroll
+4,Returning,Mobile,30,Click

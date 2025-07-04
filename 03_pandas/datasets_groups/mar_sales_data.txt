@@ -1,0 +1,3 @@
+OrderID|ProductID|Quantity|Price
+301|PROD_B|2|120.0
+302|PROD_C|1|25.0

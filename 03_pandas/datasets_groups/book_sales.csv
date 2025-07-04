@@ -1,0 +1,21 @@
+TransactionID,BookTitle,Author,Category,Price,UnitsSold,SaleDate,CustomerEmail
+1001,The Midnight Library,Matt Haig,Fiction,15.99,2,2023-01-05,alice@example.com
+1002,Atomic Habits,James Clear,Self-Help,12.50,1,2023-01-05,bob@example.com
+1003,Dune,Frank Herbert,Sci-Fi,10.00,3,2023-01-06,charlie@example.com
+1004,The Psychology of Money,Morgan Housel,Finance,14.25,1,2023-01-06,david@example.com
+1005,Project Hail Mary,Andy Weir,Sci-Fi,16.50,1,2023-01-07,eve@example.com
+1006,Where the Crawdads Sing,Delia Owens,Fiction,13.75,2,2023-01-07,frank@example.com
+1007,Sapiens,Yuval Noah Harari,History,18.00,1,2023-01-08,grace@example.com
+1008,Educated,Tara Westover,Memoir,11.99,1,2023-01-08,heidi@example.com
+1009,The Alchemist,Paulo Coelho,Fiction,9.50,5,2023-01-09,ivan@example.com
+1010,Becoming,Michelle Obama,Memoir,17.00,1,2023-01-09,judy@example.com
+1011,Circe,Madeline Miller,Fantasy,14.99,2,2023-01-10,alice@example.com
+1012,The Silent Patient,Alex Michaelides,Thriller,11.00,1,2023-01-10,bob@example.com
+1013,The Martian,Andy Weir,Sci-Fi,10.50,1,2023-01-11,charlie@example.com
+1014,Dune,Frank Herbert,Sci-Fi,10.00,1,2023-01-11,david@example.com
+1015,The Midnight Library,Matt Haig,Fiction,15.99,1,2023-01-12,eve@example.com
+1016,"Thinking, Fast and Slow",Daniel Kahneman,Psychology,19.99,1,2023-01-12,frank@example.com
+1017,A Gentleman in Moscow,Amor Towles,Fiction,13.50,1,2023-01-13,grace@example.com
+1018,The Vanishing Half,Brit Bennett,Fiction,12.00,1,2023-01-13,heidi@example.com
+1019,Where the Crawdads Sing,Delia Owens,Fiction,13.75,1,2023-01-14,ivan@example.com
+1020,The Alchemist,Paulo Coelho,Fiction,9.50,2,2023-01-14,judy@example.com

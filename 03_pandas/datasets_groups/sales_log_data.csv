@@ -1,0 +1,13 @@
+OrderID,Region,Product,Quantity,Price
+1001,North,Keyboard,2,75.00
+1002,South,Mouse,5,25.50
+1003,North,Monitor,1,300.00
+1004,West,Mouse,3,24.00
+1005,South,Webcam,2,50.00
+1006,North,Keyboard,1,75.00
+1007,West,Monitor,2,280.00
+1008,South,Keyboard,3,75.00
+1009,North,Mouse,4,25.50
+1010,West,USB Hub,5,15.00
+1011,South,Webcam,1,50.00
+1012,North,Monitor,1,300.00

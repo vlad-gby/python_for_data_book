@@ -1,0 +1,4 @@
+OrderID,ProductID,Quantity,Price
+101,PROD_A,2,50.0
+102,PROD_B,1,120.0
+103,PROD_A,1,50.0

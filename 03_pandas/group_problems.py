@@ -13,7 +13,7 @@
 import pandas as pd
 import numpy as np
 
-sales = pd.read_csv('book_sales.csv')
+sales = pd.read_csv('datasets_groups/book_sales.csv')
 first_entries = sales.head()
 # info = sales.info()
 shape = sales.shape
@@ -66,7 +66,7 @@ summary = cafe_transactions_df['Price'].describe()
 
 # Your Task: Load the data from the provided raw text string. Check for missing information in the records and verify the uniqueness of the UserID.
 
-users = pd.read_csv('users.csv', sep='|')
+users = pd.read_csv('datasets_groups/users.csv', sep='|')
 is_id_unique = users['UserID'].is_unique
 missing_data = users.isna().sum()
 # print(missing_data)
@@ -84,7 +84,7 @@ missing_data = users.isna().sum()
 # Their last_name is missing.
 
 
-sales = pd.read_csv('customer_data.csv')
+sales = pd.read_csv('datasets_groups/customer_data.csv')
 cust_of_interest = sales.loc[(sales['country'] == 'Germany') & 
                              (sales['age'] <= 40) & 
                              (sales['age'] >= 30) & 
@@ -140,7 +140,7 @@ import re
 import io
 import datetime
 
-with open('sys_log.csv') as file:
+with open('datasets_groups/sys_log.csv') as file:
     log = file.readlines()
     new_log = []
     for line in log:
@@ -161,7 +161,7 @@ errors_of_interest = errors[(errors['Timestamp'].dt.time > pd.to_datetime('02:00
 
 # Your Task: The objective is to analyze the profitability of each order item. The final DataFrame must contain two new columns: profit and profit_margin_percent. The result should be sorted to show the 5 most profitable order items at the top.
 
-data = pd.read_csv('orders_data.csv')
+data = pd.read_csv('datasets_groups/orders_data.csv')
 profit_col = (data['sale_price'] - data['cost_price']) * data['quantity']
 prof_marg_col = (data['sale_price'] - data['cost_price']) * data['quantity'] / data['sale_price'] / data['quantity']
 
@@ -244,9 +244,8 @@ data = data.iloc[:, [0, 4, 1, 3, 2]]
 
 # Your Task: Create a summary report that shows the performance of each sales Region. The final report must show the total Revenue, the average Quantity per order, and the number of unique Products sold for each region.
 
-log = pd.read_csv('sales_log_data.csv')
+log = pd.read_csv('datasets_groups/sales_log_data.csv')
 log['Revenue'] = log['Price'] * log['Quantity']
-log_by_region = pd.DataFrame()
 
 summary = log.groupby('Region').agg(tot_rev = ('Revenue', 'sum'),
                                  avg_quantity = ('Quantity', 'mean'),
@@ -302,9 +301,106 @@ data_str = """transaction_id~customer_segment~product_category
 data_df = pd.read_csv(io.StringIO(data_str), sep='~')
 reshaped_count = pd.crosstab(data_df['customer_segment'], data_df['product_category'])
 
-# print(reshaped_count)
 
 
+# ## Group 5: Joining & Reshaping
+
+# ### Project 5.1: Combining Customer and Order Data
+# Scenario: An online store keeps its customer information and order details in two separate files.
+
+# Your Task: Create a single, unified DataFrame that links each order to the customer's name and country.
+
+custs = pd.read_csv('datasets_groups/customers.csv')
+orders = pd.read_csv('datasets_groups/orders.csv')
+
+unified_df = custs.merge(orders, on='customer_id')
+unified_df = unified_df[['customer_id', 'name', 'country']]
+
+# print(unified_df)
+
+
+# ### Project 5.2: Reshaping "Wide" Sensor Data to "Long" Format
+# Scenario: An environmental monitoring system outputs its data in a "wide" format, where each month's reading is in a separate column. This format is difficult to use for plotting.
+
+# Your Task: Transform the provided "wide" DataFrame into a "long" (or "tidy") format. The final DataFrame should have only three columns: sensor_id, month, and reading.
+
+wide_sensor_data = {
+    'sensor_id': ['SensorA', 'SensorB', 'SensorC'],
+    'Jan_2025': [15.2, 14.8, 15.5],
+    'Feb_2025': [16.1, 15.5, 16.3],
+    'Mar_2025': [18.5, 17.9, 18.8]
+}
+
+data = pd.DataFrame(wide_sensor_data)
+data = pd.melt(data, id_vars='sensor_id', var_name='month', value_name='reading')
+
+# print(data)
+
+
+# ### Project 5.3: Creating a Sales Summary Pivot Table
+# Scenario: You have a long, raw list of sales transactions. A manager wants a compact, spreadsheet-style summary showing total sales for each product across different regions.
+
+# Your Task: Create a pivot table from the provided transaction data. The final table should have each unique Product as a row, each unique Region as a column, and the sum of Sales as the values in the cells. Fill any missing combinations with 0.
+
+transaction_data = [
+    {'Region': 'North', 'Product': 'Keyboard', 'Sales': 225},
+    {'Region': 'South', 'Product': 'Mouse', 'Sales': 127},
+    {'Region': 'North', 'Product': 'Monitor', 'Sales': 300},
+    {'Region': 'West', 'Product': 'Mouse', 'Sales': 72},
+    {'Region': 'South', 'Product': 'Webcam', 'Sales': 100},
+    {'Region': 'North', 'Product': 'Keyboard', 'Sales': 75},
+    {'Region': 'West', 'Product': 'Monitor', 'Sales': 560},
+    {'Region': 'South', 'Product': 'Keyboard', 'Sales': 225},
+    {'Region': 'North', 'Product': 'Mouse', 'Sales': 102}
+]
+
+data = pd.DataFrame(transaction_data)
+pivot = data.pivot_table(index='Product', columns='Region', aggfunc='sum', values='Sales').fillna(0)
+
+# print(pivot)
+
+
+# ### Project 6.1: Consolidating Monthly Sales Reports
+# Scenario: You have received three separate monthly sales reports as different data files. You also have a separate file with product category information.
+
+# Your Task: Create a single, master DataFrame for the entire quarter. This master table should include the Revenue for each transaction, and it must also be enriched with the correct Category for each product sold. Finally, provide a simple summary of total sales per category.
+
+import io
+
+jan_sales = pd.read_csv('datasets_groups/jan_sales.csv')
+from feb_sales_data import feb_sales_data
+feb_sales = pd.DataFrame(feb_sales_data)
+with open('datasets_groups/mar_sales_data.txt') as f:
+    mar_sales = pd.read_csv(io.StringIO(''.join(f.readlines())), sep='|')
+prod_lookup = pd.read_csv('datasets_groups/product_lookup.csv')
+
+quarter_sales = pd.concat([jan_sales, feb_sales, mar_sales]).reset_index(drop=1)
+quarter_sales['Revenue'] = quarter_sales['Quantity'] * quarter_sales['Price']
+quarter_sales = quarter_sales.merge(prod_lookup, on = 'ProductID')
+
+sales_per_cat = quarter_sales.groupby('Category')[['Quantity', 'Price', 'Revenue']].sum()
+
+# print(sales_per_cat)
+
+
+
+### Project 6.2: Advanced User Activity Pivot Table
+# Scenario: You have a log of user activities, and you need to create a complex summary report.
+
+# Your Task: Create a single pivot table that shows user engagement metrics. The table's rows should be the User_Segment, the columns should be the Device_Type, and the values should display both the average session duration AND the total number of unique actions for each combination. The report must also include overall totals for all rows and columns.
+
+
+user_activity = pd.read_csv('datasets_groups/user_activity.csv')
+pivot = user_activity.pivot_table(index='User_Segment', columns='Device_Type', 
+                                  values=['Session_Duration_Min', 'Action'],
+                                  aggfunc={'Session_Duration_Min': 'mean',
+                                           'Action': 'nunique'},
+                                  margins=1)
+pivot_adequate_naming = user_activity.groupby('User_Segment').agg(avg_session_duration = ('Session_Duration_Min', 'mean'),
+                                                                  nunique_actions = ('Action', 'nunique'))
+#won't do the totals - you'll show me if there is a concise way of making those. Pivot is not a good way of doing it
+
+# print(pivot_adequate_naming)
 
 
 

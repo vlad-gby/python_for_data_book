@@ -1,0 +1,8 @@
+Timestamp           LogLevel    Message
+2025-07-03T01:55:12Z  INFO        User logged in successfully
+2025-07-03T02:05:22Z  ERROR       Database connection failed: timeout
+2025-07-03T02:05:30Z  INFO        Retrying connection...
+2025-07-03T02:15:45Z  WARNING     Disk space running low
+2025-07-03T02:35:10Z  ERROR       NullPointerException at payment_module
+2025-07-03T03:01:02Z  ERROR       API key not valid
+2025-07-03T03:10:00Z  INFO        System reboot initiated

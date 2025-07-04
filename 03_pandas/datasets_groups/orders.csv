@@ -1,0 +1,6 @@
+order_id,customer_id,product,amount
+1,101,Keyboard,75
+2,102,Mouse,25
+3,101,Monitor,300
+4,103,Mouse,25
+5,105,Webcam,50
