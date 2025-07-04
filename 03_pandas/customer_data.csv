@@ -1,0 +1,13 @@
+customer_id,first_name,last_name,age,country
+101,Anna,Schmidt,35,Germany
+102,Marco,Rossi,28,Italy
+103,Hans,,42,Germany
+104,Luisa,Moretti,55,Italy
+105,Klaus,Weber,31,Germany
+106,Sophie,Meyer,25,Germany
+107,Jonas,,38,Germany
+108,Chiara,Conti,39,Italy
+109,Lars,Hoffmann,45,Germany
+110,Monika,Bauer,33,Germany
+111,Luca,,30,Italy
+112,Stefan,,32,Germany
