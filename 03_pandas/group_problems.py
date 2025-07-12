@@ -387,7 +387,7 @@ sales_per_cat = quarter_sales.groupby('Category')[['Quantity', 'Price', 'Revenue
 ### Project 6.2: Advanced User Activity Pivot Table
 # Scenario: You have a log of user activities, and you need to create a complex summary report.
 
-# Your Task: Create a single pivot table that shows user engagement metrics. The table's rows should be the User_Segment, the columns should be the Device_Type, and the values should display both the average session duration AND the total number of unique actions for each combination. The report must also include overall totals for all rows and columns.
+# Your Task: Create a single pivot table that shows user engagement metrics. The table's rows should be the User_Segment, the columns should be the Device_Type, and the values should display both the average session duration AND the total number of unique actions for each combination. The report must   
 
 
 user_activity = pd.read_csv('datasets_groups/user_activity.csv')
@@ -401,6 +401,95 @@ pivot_adequate_naming = user_activity.groupby('User_Segment').agg(avg_session_du
 #won't do the totals - you'll show me if there is a concise way of making those. Pivot is not a good way of doing it
 
 # print(pivot_adequate_naming)
+
+
+### Project 6.3: Tidying and Reshaping Messy Health Data
+# Scenario: You have received patient data from a clinical trial in a "wide" format that is difficult to analyze. The data needs to be cleaned, reshaped into a "long" format, and then pivoted back into a clean summary table.
+
+# Your Task:
+
+# Load the data and clean the column names (e.g., remove special characters, make them lowercase).
+
+# "Melt" the DataFrame to transform it from a wide format to a long format with columns for patient_id, visit, and measurement.
+
+# Create two new columns from the measurement column: one for the metric (e.g., 'hr' or 'bp') and one for the value.
+
+# Create a final, clean pivot table where the index is patient_id, the columns are the metric, and the values are the average measurement for that metric across all visits.
+
+patient_data = {
+    'Patient-ID': ['P01', 'P02', 'P03'],
+    'Visit 1 (HR)': [72, 68, 75],
+    'Visit 1 (BP)': [120, 115, 125],
+    'Visit 2 (HR)': [75, 70, 78],
+    'Visit 2 (BP)': [122, 118, 128]
+}
+
+data = pd.DataFrame(patient_data)
+data.columns = data.columns.str.lower().str.replace('[()]', '', regex=True).str.replace('[ -]', '_', regex=True)
+data = data.melt(id_vars='patient_id', var_name='visit', value_name='measurement')
+data['metric'] = data['visit'].str.extract(pat=r'(hr|bp)')
+data['visit'] = data['visit'].str.extract(pat=r'(\d)')
+data['metric'] = data['metric'].str.upper()
+data = data.iloc[:, [0, 1, 3, 2]]
+
+pivot = data.pivot_table(index='patient_id', columns='metric', values='measurement')
+
+# print(pivot)
+
+
+### Project 6.4: Analyzing Voting Patterns
+# Scenario: You have data from a local election with voter demographics and their vote.
+
+# Your Task: Create a cross-tabulation that shows the voting distribution (how many people voted 'Yes' vs. 'No') across different Age_Group and District combinations. The final table must show percentages relative to each district's total vote.
+
+voting_data = """VoterID,Age_Group,District,Vote
+1,18-30,North,Yes
+2,31-50,South,No
+3,51+,North,No
+4,18-30,North,Yes
+5,31-50,West,Yes
+6,51+,South,No
+7,18-30,West,No
+8,31-50,North,Yes
+9,51+,West,Yes"""
+
+data = pd.read_csv(io.StringIO(voting_data))
+voting_distribution = pd.crosstab([data['Age_Group'], data['District']], data['Vote'], normalize='index') * 100
+voting_distribution['Yes'] = voting_distribution['Yes'].astype(int).astype(str) + '%'
+voting_distribution['No'] = voting_distribution['No'].astype(int).astype(str) + '%'
+
+# print(voting_distribution)
+
+
+### Project 6.5: Merging Aggregated Data Back to Original Source
+# Scenario: You have a DataFrame of employees and their sales. You need to calculate each employee's performance relative to their department's average.
+
+# Your Task:
+
+# Calculate the average sales for each Department.
+
+# Join this aggregated information back to the original employee DataFrame.
+
+# Create a new column, performance_vs_avg, that shows how much each employee's sales are above or below their department's average.
+
+employee_sales = [
+    {'Employee_ID': 'E101', 'Name': 'Alice', 'Department': 'Sales', 'Sales': 50000},
+    {'Employee_ID': 'E102', 'Name': 'Bob', 'Department': 'Sales', 'Sales': 60000},
+    {'Employee_ID': 'E201', 'Name': 'Charlie', 'Department': 'Marketing', 'Sales': 25000},
+    {'Employee_ID': 'E103', 'Name': 'David', 'Department': 'Sales', 'Sales': 45000},
+    {'Employee_ID': 'E202', 'Name': 'Eve', 'Department': 'Marketing', 'Sales': 30000}
+]
+
+data = pd.DataFrame(employee_sales)
+avg_for_dep = data[['Department', 'Sales']].groupby('Department').transform('mean')
+data['Dep_Avg'] = avg_for_dep.round()
+data['Performance_vs_Avg'] = data['Sales'] - data['Dep_Avg']
+
+# print(data)
+
+
+
+
 
 
 
